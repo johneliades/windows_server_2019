@@ -29,7 +29,11 @@ The script assumes(for now) that:
 * documents folder is redirected to a documents folder in the Z:\ remote drive
 * pictures folder is redirected to a pictures folder in the Z:\ remote drive
 
-Note: The redirections are necessary because any program installed that tries to access downloads documents or pictures would result in an error as C:\ drive is restricted and hidden. Ideally all similar folders should be redirected under Z:\
+Notes: 
+
+* The redirections are necessary because any program installed that tries to access downloads documents or pictures would result in an error as C:\ drive is restricted and hidden. Ideally all similar folders should be redirected under Z:\
+
+* All the restrictions are applied using GPO
 
 ## Run
 
