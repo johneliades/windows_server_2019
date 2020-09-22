@@ -4,7 +4,7 @@ Script for mass user creation on a windows server 2019 with group policy (GPO) r
 
 ## Notes
 
-The script assumes that (for now):
+The script assumes(for now) that:
 
 * a forest is already created with the name school.local
 * there is a disk with the label C:\ on the server
@@ -14,7 +14,22 @@ The script assumes that (for now):
 
 ## Features
 
+* users cannot open:
+  * the task manager
+  * the registry editor
+  * the cmd
+  * any windows settings
+* users cannot right click on taskbar
+* users cannot install or uninstall programs
+* users cannot switch user, hibernate, lock, change password
+* users do not have access to their C:\ drive
+* each user can see their SMB share created remotely on server as their personal space labeled Z:\ that has full access and points to a different folder for each user. All those user folders are by default stored in C:\Network Users\ on the server
+* all users see an SMB share labeled K\: that has read access only for teacher to assign homework. The default location is C:\Share on the server
+* downloads folder is redirected to a downloads folder in the Z:\ remote drive
+* documents folder is redirected to a documents folder in the Z:\ remote drive
+* pictures folder is redirected to a pictures folder in the Z:\ remote drive
 
+Note: The redirections are necessary because any program installed that tries to access downloads documents or pictures would result in an error as C:\ drive is restricted and hidden. Ideally all similar folders should be redirected under Z:\
 
 ## Run
 
