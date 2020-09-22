@@ -2,7 +2,7 @@
 
 Script for mass user creation on a windows server 2019 with group policy (GPO) restrictions on the clients adequate for use in a school environment.
 
-![Image of website](https://github.com/johneliades/windows_server_2019/image.png)
+![Image of website](https://github.com/johneliades/windows_server_2019/blob/master/image.png)
 
 ## Notes
 
