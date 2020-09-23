@@ -8,11 +8,11 @@ Script for mass user creation on a windows server 2019 with group policy (GPO) r
 
 The script assumes(for now) that:
 
-* a forest is already created with the name school.local
 * there is a disk with the label C:\ on the server
-* the server computer is named "SERVER"
 * the usernames and user passwords are stored in the file users.csv in the given format
 * the active directory domain services is installed from the server manager
+* a forest is already created with the name school.local
+* server has static ip and clients must configure dns ip to be the same as server's
 
 ## Features
 

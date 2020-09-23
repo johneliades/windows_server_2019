@@ -1,5 +1,24 @@
 $Users = Import-Csv -Path ".\users.csv"
 
+#Install-WindowsFeature -Name AD-Domain-Services
+
+#$Params = @{
+#    CreateDnsDelegation = $false
+#    DatabasePath = 'C:\Windows\NTDS'
+#    DomainMode = 'WinThreshold'
+#    DomainName = 'school.local'
+#    DomainNetbiosName = 'SCHOOL'
+#    ForestMode = 'WinThreshold'
+#    InstallDns = $true
+#    LogPath = 'C:\Windows\NTDS'
+#    NoRebootOnCompletion = $true
+#    SafeModeAdministratorPassword = "qwerty4!" | ConvertTo-SecureString -AsPlainText -Force
+#    SysvolPath = 'C:\Windows\SYSVOL'
+#    Force = $true
+#}
+ 
+#Install-ADDSForest @Params
+
 #Create server folders
 New-Item `
     -Path "C:\" `
@@ -73,7 +92,7 @@ Set-GPRegistryValue `
     -Key "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" `
     -ValueName "{374DE290-123F-4565-9164-39C4925E467B}" `
     -Type ExpandString `
-    -Value "\\SERVER\Network Users\%USERNAME%\Downloads" `
+    -Value "\\$($env:COMPUTERNAME)\Network Users\%USERNAME%\Downloads" `
 
 #Redirect Documents
 Set-GPRegistryValue `
@@ -81,7 +100,7 @@ Set-GPRegistryValue `
     -Key "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" `
     -ValueName "Personal" `
     -Type ExpandString `
-    -Value "\\SERVER\Network Users\%USERNAME%\Documents" `
+    -Value "\\$($env:COMPUTERNAME)\Network Users\%USERNAME%\Documents" `
 
 #Redirect Pictures
 Set-GPRegistryValue `
@@ -89,7 +108,7 @@ Set-GPRegistryValue `
     -Key "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" `
     -ValueName "My Pictures" `
     -Type ExpandString `
-    -Value "\\SERVER\Network Users\%USERNAME%\Pictures" `
+    -Value "\\$($env:COMPUTERNAME)\Network Users\%USERNAME%\Pictures" `
 
 New-ADOrganizationalUnit -Name "CLIENTS" -Path "DC=SCHOOL,DC=LOCAL" -ProtectedFromAccidentalDeletion $True
 New-GPO -Name "Computer Policies" | New-GPLink -Target "OU=CLIENTS,DC=SCHOOL,DC=LOCAL" -LinkEnabled Yes
@@ -136,7 +155,7 @@ ForEach ($User In $Users)
         -CannotChangePassword $True `
         -Path "OU=SCHOOL,DC=SCHOOL,DC=LOCAL" `
         -HomeDrive "Z:" `
-        -HomeDirectory "\\SERVER\Network Users\$($User.Name)" `
+        -HomeDirectory "\\$($env:COMPUTERNAME)\Network Users\$($User.Name)" `
         -Enabled $True `
 
     # Set Security 
