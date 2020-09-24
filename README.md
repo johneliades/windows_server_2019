@@ -10,9 +10,7 @@ The script assumes(for now) that:
 
 * there is a disk with the label C:\ on the server
 * the usernames and user passwords are stored in the file users.csv in the given format
-* the active directory domain services is installed from the server manager
-* a forest is already created with the name school.local
-* server has static ip and clients must configure dns ip to be the same as server's
+* clients must configure dns ip to be the same as server's ip("192.168.1.20" by default)
 
 ## Features
 
@@ -39,9 +37,13 @@ Notes:
 
 ## Run
 
-Running the setup.ps1 in a powershell on the server would result in the users' creation (as described in the users.csv) with the features described above. After that, any client machine connected in the same domain(school.local) should be able to connect to any of those restricted users.
+- Run the init.ps1 in powershell and then *** REBOOT ***
 
-Running the cleanup.ps1 should result in reversin the proccess.
+- Then run the setup.ps1
+
+ After running the 1st script on the server the active directory domain services gets installed and a static ip is assigned on the server accompanied by a school dns server. After running the 2nd script the users are created (as described in the users.csv) with the features described above. After that, any client machine connected in the same domain (school.local by default) should be able to connect to any of those policy restricted users.
+
+Running the cleanup.ps1 should result in reversing the proccess.
 
 ## Author
 
