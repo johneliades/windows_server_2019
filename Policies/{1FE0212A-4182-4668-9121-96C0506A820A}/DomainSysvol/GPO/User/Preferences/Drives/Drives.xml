@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drives clsid="{8FDDCC1A-0C3C-43cd-A6B4-71A6DF20DA8C}"><Drive clsid="{935D1B74-9CB8-4e3c-9914-7DD559B7A417}" name="K:" status="K:" image="0" changed="2020-09-24 02:17:31" uid="{F555525D-F744-4593-87A8-9BFFE64B6839}"><Properties action="C" thisDrive="NOCHANGE" allDrives="NOCHANGE" userName="" path="%LogonServer%\Share" label="Share" persistent="0" useLetter="1" letter="K"/></Drive>
+</Drives>

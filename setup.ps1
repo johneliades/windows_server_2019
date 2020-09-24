@@ -1,6 +1,9 @@
 $Users = Import-Csv -Path ".\users.csv"
 
-#Install-WindowsFeature -Name AD-Domain-Services
+New-NetIPAddress -InterfaceAlias 'Ethernet' -AddressFamily IPv4 -IPAddress 192.168.1.20 -PrefixLength 24 -DefaultGateway 192.168.1.1
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses("127.0.0.1")
+
+#Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
 
 #$Params = @{
 #    CreateDnsDelegation = $false
@@ -18,6 +21,8 @@ $Users = Import-Csv -Path ".\users.csv"
 #}
  
 #Install-ADDSForest @Params
+
+#reboot
 
 #Create server folders
 New-Item `
@@ -83,7 +88,9 @@ $acl.SetAccessRule($accessrule)
 Set-Acl -Path "C:\Share\" -AclObject $acl
 
 New-ADOrganizationalUnit -Name "SCHOOL" -Path "DC=SCHOOL,DC=LOCAL" -ProtectedFromAccidentalDeletion $True
-New-GPO -Name "User Policies" | New-GPLink -Target "OU=SCHOOL,DC=SCHOOL,DC=LOCAL" -LinkEnabled Yes
+New-ADOrganizationalUnit -Name "Users" -Path "OU=SCHOOL,DC=SCHOOL,DC=LOCAL" -ProtectedFromAccidentalDeletion $True
+
+New-GPO -Name "User Policies" | New-GPLink -Target "OU=Users,OU=SCHOOL,DC=SCHOOL,DC=LOCAL" -LinkEnabled Yes
 Import-GPO -TargetName "User Policies" -BackupGpoName "User Policies" -Path "./Policies"
 
 #Redirect Downloads
@@ -110,11 +117,11 @@ Set-GPRegistryValue `
     -Type ExpandString `
     -Value "\\$($env:COMPUTERNAME)\Network Users\%USERNAME%\Pictures" `
 
-New-ADOrganizationalUnit -Name "CLIENTS" -Path "DC=SCHOOL,DC=LOCAL" -ProtectedFromAccidentalDeletion $True
-New-GPO -Name "Computer Policies" | New-GPLink -Target "OU=CLIENTS,DC=SCHOOL,DC=LOCAL" -LinkEnabled Yes
+New-ADOrganizationalUnit -Name "Computers" -Path "OU=SCHOOL,DC=SCHOOL,DC=LOCAL" -ProtectedFromAccidentalDeletion $True
+New-GPO -Name "Computer Policies" | New-GPLink -Target "OU=Computers,OU=SCHOOL,DC=SCHOOL,DC=LOCAL" -LinkEnabled Yes
 Import-GPO -TargetName "Computer Policies" -BackupGpoName "Computer Policies" -Path "./Policies"
 
-redircmp "OU=CLIENTS,DC=SCHOOL,dc=LOCAL"
+redircmp "OU=Computers,OU=SCHOOL,DC=SCHOOL,DC=LOCAL"
 
 ForEach ($User In $Users)
 {
